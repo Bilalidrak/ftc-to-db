@@ -1,0 +1,22 @@
+services:
+  importer:
+    build: .
+    container_name: csv_importer
+    restart: unless-stopped
+    networks:
+      - mongo-csv-project_default
+    environment:
+      MONGO_USER: admin
+      MONGO_PASS: admin123
+      MONGO_DB: mydb
+      MONGO_COLLECTION: mycollection
+      MONGO_HOST: mongo_server   # existing mongo container ka name
+      CHECK_INTERVAL: 10
+      BATCH_SIZE: 10000
+    volumes:
+      - ./csv_files:/app/csv_files
+      - ./logs:/app/logs
+
+networks:
+  mongo-csv-project_default:
+    external: true
